@@ -7,11 +7,13 @@ import { Button, ButtonProps } from "../ui/button";
 interface SubmitButtonProps {
   text?: string;
   className?: ButtonProps["className"];
+  size?: ButtonProps["size"]
 }
 
 export const SubmitButton = ({
   text = "submit",
   className = "",
+  size = "lg"
 }: SubmitButtonProps) => {
   const { pending } = useFormStatus();
   return (
@@ -19,7 +21,7 @@ export const SubmitButton = ({
       type="submit"
       disabled={pending}
       className={`capitalize ${className}`}
-      size="lg"
+      size={size}
     >
       {pending ? (
         <>
