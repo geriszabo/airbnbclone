@@ -3,6 +3,7 @@ import { FormInput } from "@/components/form/FormInput";
 import { SubmitButton } from "@/components/form/SubmitButton";
 import { createProfileAction } from "@/utils/actions";
 import { currentUser } from "@clerk/nextjs/server";
+import { Profile } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 async function CreateProfilePage() {
@@ -34,7 +35,7 @@ async function CreateProfilePage() {
 
 export default CreateProfilePage;
 
-const createProfileInputFields = [
+export const createProfileInputFields: {name: keyof Profile, label: string}[] = [
   {
     name: "firstName",
     label: "First Name",
