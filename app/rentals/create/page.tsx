@@ -2,6 +2,7 @@ import { FormInput } from "@/components/form/FormInput"
 import { FormContainer } from "@/components/form/FormContainer"
 import { createPropertyAction } from "@/utils/actions"
 import { SubmitButton } from "@/components/form/SubmitButton"
+import { PriceInput } from "@/components/form/PriceInput"
 
 
 
@@ -17,6 +18,7 @@ export default function CreatePropertyPage() {
                 <div className="grid md:grid-cols-2 gap-8 mb-4">
                     <FormInput name="name" type="text" label="Name (20 limit)" defaultValue="Cabin in Austria" />
                     <FormInput name="tagline" type="text" label="Tagline (20 limit)" defaultValue="Dream Getaway Awaits You Here" />
+                    <PriceInput/>
                 </div>
                 <SubmitButton text="create rental" className="mb-12"/>
             </FormContainer>
