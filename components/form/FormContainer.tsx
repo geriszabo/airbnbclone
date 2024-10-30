@@ -16,16 +16,12 @@ const initialState = {
 };
 
 export const FormContainer = ({ action, children, title }: FormContainerProps) => {
-  const [state, formAction] = useFormState(action, initialState);
-  const { toast } = useToast();
-
-  useEffect(() =>{
-    if(state.message) {
-        toast({title,  description: state.message})
-    }
-  }, [state, title, toast])
-
-
-
-  return <form action={formAction}>{children}</form>;
+    const [state, formAction] = useFormState(action, initialState);
+    const { toast } = useToast();
+    useEffect(() => {
+      if (state.message) {
+        toast({ title, description: state.message });
+      }
+    }, [state, title, toast]);
+    return <form action={formAction}>{children}</form>;
 };
