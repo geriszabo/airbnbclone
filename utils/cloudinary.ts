@@ -10,7 +10,7 @@ cloudinary.config({
 
 export default cloudinary;
 
-export const getImageUrls = async (image: File) => {
+export const getImageUrl = async (image: File) => {
   const imageBuffer = await image.arrayBuffer();
   const imageArray = Array.from(new Uint8Array(imageBuffer));
   const imageData = Buffer.from(imageArray);
