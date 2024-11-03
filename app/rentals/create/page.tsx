@@ -5,6 +5,8 @@ import { SubmitButton } from "@/components/form/SubmitButton"
 import { PriceInput } from "@/components/form/PriceInput"
 import { FormCategoriesInput } from "@/components/form/FormCategoriesInput"
 import { TextAreaInput } from "@/components/form/TextAreaInput"
+import { FormCountriesInput } from "@/components/form/FormCountriesInput"
+import { ImageInput } from "@/components/form/ImageInput"
 
 
 
@@ -24,6 +26,10 @@ export default function CreatePropertyPage() {
                     <FormCategoriesInput/>
                 </div>
                     <TextAreaInput name="description" labelText="Description 10-100 words)" />
+                    <div className="grid sm:grid-cols-2 gap-8 mt-4">
+                        <FormCountriesInput/>
+                        <ImageInput/>
+                    </div>
                 <SubmitButton text="create rental" className="mb-12"/>
             </FormContainer>
         </div>
