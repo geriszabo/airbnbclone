@@ -10,7 +10,7 @@ cloudinary.config({
 
 export default cloudinary;
 
-export const getImageUrl = async (image: File) => {
+export const getImageUrl = async (image: File, usecase: "profile-image" | "property-image") => {
   const imageBuffer = await image.arrayBuffer();
   const imageArray = Array.from(new Uint8Array(imageBuffer));
   const imageData = Buffer.from(imageArray);
@@ -22,7 +22,7 @@ export const getImageUrl = async (image: File) => {
   try {
     const result = await cloudinary.uploader.upload(
       `data:image/png;base64,${imageBase64}`,
-      { folder: "home-away" }
+      { folder: usecase === "profile-image" ? "home-away" : "home-away-properties" }
     );
     return result;
   } catch (error) {
