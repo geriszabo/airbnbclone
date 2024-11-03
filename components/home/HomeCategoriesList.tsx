@@ -28,7 +28,7 @@ export const HomeCategoriesList = ({
                     isActive ? "text-primarty" : ""
                   }`}
                 >
-                  <propertyCategory.icon className="w-8 h-8" />
+                  <propertyCategory.icon className="w-5 h-5" />
                   <p className="capitalize text-sm mt-1">
                     {propertyCategory.label}
                   </p>
