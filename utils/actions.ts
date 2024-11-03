@@ -123,7 +123,7 @@ export const updateProfileImageAction = async (
   try {
     const image = formData.get("image") as File;
     const validatedFields = validateWithZodSchema(imageSchema, { image });
-    const fullPath = await getImageUrl(validatedFields.image);
+    const fullPath = await getImageUrl(validatedFields.image, "profile-image");
     await deleteCurrentProfileImageFromCloudinary(user.id);
     await db.profile.update({
       where: {
@@ -141,16 +141,26 @@ export const updateProfileImageAction = async (
 };
 
 export const createPropertyAction = async (
-  prevState: any,
+  prevState: unknown,
   formData: FormData
 ): Promise<{ message: string }> => {
   const user = await getAuthUser();
   try {
     const rawData = Object.fromEntries(formData);
+    const file = formData.get("image") as File;
+
     const validatedFields = validateWithZodSchema(propertySchema, rawData);
-    return { message: "Property created" };
+    const validatedFile = validateWithZodSchema(imageSchema, { image: file });
+    const fullPath = await getImageUrl(validatedFile.image, "property-image");
+    await db.property.create({
+      data: {
+        ...validatedFields,
+        image: fullPath.url,
+        profileId: user.id,
+      },
+    });
   } catch (error) {
     return renderError(error);
   }
-  // redirect("/")
+  redirect("/");
 };
