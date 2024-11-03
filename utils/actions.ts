@@ -164,3 +164,33 @@ export const createPropertyAction = async (
   }
   redirect("/");
 };
+
+export const fetchProperties = async ({
+  search = "",
+  category,
+}: {
+  search?: string;
+  category?: string;
+}) => {
+  return await db.property.findMany({
+    where: {
+      category, //If category is undefied, we still get back all categories
+      OR: [
+        //Im looking for the search therm eiter inthe name or in the tagline inside the property db
+        { name: { contains: search, mode: "insensitive" } },
+        { tagline: { contains: search, mode: "insensitive" } },
+      ],
+    },
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      country: true,
+      tagline: true,
+      price: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};
