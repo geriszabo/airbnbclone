@@ -1,3 +1,5 @@
+"use client"
+
 import { FormInput } from "@/components/form/FormInput"
 import { FormContainer } from "@/components/form/FormContainer"
 import { createPropertyAction } from "@/utils/actions"
@@ -7,8 +9,19 @@ import { FormCategoriesInput } from "@/components/form/FormCategoriesInput"
 import { TextAreaInput } from "@/components/form/TextAreaInput"
 import { FormCountriesInput } from "@/components/form/FormCountriesInput"
 import { ImageInput } from "@/components/form/ImageInput"
+import { FormCounterInput } from "@/components/form/FormCounterInput"
 
 
+type RoomDetailsType = {
+    label: "guests" | "bedrooms" | "beds" | "baths"
+}
+
+const roomDetails: RoomDetailsType[] = [
+    {label: 'baths'},
+    {label: 'bedrooms'},
+    {label: 'beds'},
+    {label: 'guests'},
+]
 
 export default function CreatePropertyPage() {
   return (
@@ -30,6 +43,8 @@ export default function CreatePropertyPage() {
                         <FormCountriesInput/>
                         <ImageInput/>
                     </div>
+                    <h3 className="text-lg mt-8 mb-4 font-medium" >Accomodation Details</h3>
+                    {roomDetails.map(room => <FormCounterInput key={room.label}  detail={room.label}  />)}
                 <SubmitButton text="create rental" className="mb-12"/>
             </FormContainer>
         </div>
