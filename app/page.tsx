@@ -1,5 +1,7 @@
+import { CardsLoading } from "@/components/card/CardsLoading";
 import { HomeCategoriesList } from "@/components/home/HomeCategoriesList";
 import { HomePropertiesContainer } from "@/components/home/HomePropertiesContainer";
+import { Suspense } from "react";
 
 interface HomePageProps {
   searchParams: {
@@ -15,10 +17,13 @@ function HomePage({ searchParams }: HomePageProps) {
         category={searchParams.category}
         search={searchParams.search}
       />
+      <Suspense fallback={<CardsLoading/>} >
+
       <HomePropertiesContainer
         category={searchParams.category}
         search={searchParams.search}
-      />
+        />
+        </Suspense>
     </section>
   );
 }
