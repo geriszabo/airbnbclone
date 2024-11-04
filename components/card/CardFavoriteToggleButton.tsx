@@ -1,7 +1,15 @@
+import { Heart } from "lucide-react"
+import { Button } from "../ui/button"
 
 
-export const CardFavoriteToggleButton = () => {
+interface CardFavoriteToggleButtonProps {
+  propertyId: string
+}
+
+export const CardFavoriteToggleButton = ({propertyId}: CardFavoriteToggleButtonProps) => {
   return (
-    <div>CardFavoriteToggleButton</div>
+    <Button size="icon" variant="outline" className="p2 cursor-pointer"  >
+      <Heart/>
+    </Button>
   )
 }

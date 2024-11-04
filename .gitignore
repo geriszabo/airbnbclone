@@ -19,6 +19,7 @@
 # misc
 .DS_Store
 *.pem
+scaffolding.md
 
 # debug
 npm-debug.log*
