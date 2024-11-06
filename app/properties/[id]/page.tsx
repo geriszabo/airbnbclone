@@ -5,6 +5,7 @@ import { CardFavoriteToggleButton } from "@/components/card/CardFavoriteToggleBu
 import { ShareButton } from "../ShareButton";
 import { ImageContainer } from "../ImageContainer";
 import { CardPropertyRating } from "@/components/card/CardPropertyRating";
+import { BookingCalendar } from "../BookingCalendar";
 
 interface PropertyDetailsPageProps {
   params: {
@@ -37,7 +38,7 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
           </div>
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
-
+          <BookingCalendar />
         </div>
       </section>
     </section>
