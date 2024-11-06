@@ -1,16 +1,16 @@
 import { fetchPropertyDetails } from "@/utils/actions";
 import { redirect } from "next/navigation";
-import { BreadCrumbs } from "../BreadCrumbs";
+import { BreadCrumbs } from "../../../components/properties/BreadCrumbs";
 import { CardFavoriteToggleButton } from "@/components/card/CardFavoriteToggleButton";
-import { ShareButton } from "../ShareButton";
-import { ImageContainer } from "../ImageContainer";
+import { ShareButton } from "../../../components/properties/ShareButton";
+import { ImageContainer } from "../../../components/properties/ImageContainer";
 import { CardPropertyRating } from "@/components/card/CardPropertyRating";
-import { BookingCalendar } from "../BookingCalendar";
-import { PropertyDetails } from "../PropertyDetails";
-import { UserInfo } from "../UserInfo";
+import { BookingCalendar } from "../../../components/properties/BookingCalendar";
+import { PropertyDetails } from "../../../components/properties/PropertyDetails";
+import { UserInfo } from "../../../components/properties/UserInfo";
 import { Separator } from "@/components/ui/separator";
-import { Description } from "../Description";
-import { Amenities } from "../Amenities";
+import { Description } from "../../../components/properties/Description";
+import { Amenities } from "../../../components/properties/Amenities";
 
 interface PropertyDetailsPageProps {
   params: {
