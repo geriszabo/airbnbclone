@@ -222,35 +222,36 @@ export const toggleFavoriteAction = async ({
   favoriteId: string | null;
   pathName: string;
 }) => {
-  const user = await getAuthUser()
+  const user = await getAuthUser();
   try {
-    if(favoriteId) {
+    if (favoriteId) {
       await db.favorite.delete({
         where: {
-          id: favoriteId
-        }
-      })
+          id: favoriteId,
+        },
+      });
     } else {
       await db.favorite.create({
         data: {
           propertyId,
-          profileId: user.id
-        }
-      })
+          profileId: user.id,
+        },
+      });
     }
-    revalidatePath(pathName)
-    return {message: favoriteId ? "Removed from Favorites" : "Added to Favorites"}
+    revalidatePath(pathName);
+    return {
+      message: favoriteId ? "Removed from Favorites" : "Added to Favorites",
+    };
   } catch (error) {
-  return renderError(error)  
+    return renderError(error);
   }
 };
 
-
-export const fetchFavorites = async() => {
-  const user = await getAuthUser()
+export const fetchFavorites = async () => {
+  const user = await getAuthUser();
   const favorites = await db.favorite.findMany({
     where: {
-      profileId: user.id
+      profileId: user.id,
     },
     select: {
       property: {
@@ -260,10 +261,21 @@ export const fetchFavorites = async() => {
           tagline: true,
           country: true,
           price: true,
-          image: true
-        }
-      }
-    }
-  })
-  return favorites.map(favorite => favorite.property)
-}
+          image: true,
+        },
+      },
+    },
+  });
+  return favorites.map((favorite) => favorite.property);
+};
+
+export const fetchPropertyDetails = (id: string) => {
+  return db.property.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      profile: true,
+    },
+  });
+};
