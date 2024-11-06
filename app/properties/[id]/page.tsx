@@ -11,12 +11,25 @@ import { UserInfo } from "../../../components/properties/UserInfo";
 import { Separator } from "@/components/ui/separator";
 import { Description } from "../../../components/properties/Description";
 import { Amenities } from "../../../components/properties/Amenities";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PropertyMapProps } from "@/components/properties/PropertyMap";
 
 interface PropertyDetailsPageProps {
   params: {
     id: string;
   };
 }
+
+
+const DynamicMap = dynamic(
+  () => import("@/components/properties/PropertyMap"),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-[400px] w-full" />,
+  }
+);
+
 
 async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
   const property = await fetchPropertyDetails(params.id);
@@ -47,6 +60,7 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
           <Separator className="mt-4" />
           <Description description={description} />
           <Amenities amenities={amenities} />
+          <DynamicMap countryCode={property.country}/>
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
           <BookingCalendar />
