@@ -1,7 +1,7 @@
-import { Heart } from "lucide-react";
-import { Button } from "../ui/button";
 import { auth } from "@clerk/nextjs/server";
 import { CardSignInButton } from "../form/SubmitButton";
+import { fetchFavoriteId } from "@/utils/actions";
+import { CardFavoriteToggleForm } from "./CardFavoriteToggleForm";
 
 interface CardFavoriteToggleButtonProps {
   propertyId: string;
@@ -14,10 +14,11 @@ export const CardFavoriteToggleButton = async ({
   if (!userId) {
     return <CardSignInButton />;
   }
-
+  const favoriteId = await fetchFavoriteId({ propertyId });
   return (
-    <Button size="icon" variant="outline" className="p2 cursor-pointer">
-      <Heart />
-    </Button>
+    <CardFavoriteToggleForm
+      favoriteId={favoriteId}
+      propertyId={propertyId}
+    ></CardFavoriteToggleForm>
   );
 };

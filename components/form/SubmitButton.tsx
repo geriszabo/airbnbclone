@@ -1,10 +1,10 @@
 "use client";
 
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useFormStatus } from "react-dom";
+import {  useFormStatus } from "react-dom";
 import { Button, ButtonProps } from "../ui/button";
 import { SignInButton } from "@clerk/nextjs";
-import { Heart } from "lucide-react";
+import { Heart, RefreshCw } from "lucide-react";
 
 interface SubmitButtonProps {
   text?: string;
@@ -44,4 +44,21 @@ export const CardSignInButton = () => {
       <Heart fill="black" />
     </Button>
   </SignInButton>
+}
+
+export const CardSubmitButton = ({isFavorite}: {isFavorite: boolean}) => {
+  const {pending} = useFormStatus()
+  console.log({isFavorite})
+  function renderIcon() {
+    if(!pending) {
+      return isFavorite ? <Heart fill="black" /> : <Heart/>
+    }
+    return <RefreshCw className="animate-spin" />
+  }
+
+  const favoriteIcon = renderIcon()
+
+  return <Button type="submit" size="icon" variant="outline" className="p-y2 cursor-pointer">
+    {favoriteIcon}
+  </Button>
 }
