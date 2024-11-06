@@ -10,6 +10,7 @@ import { PropertyDetails } from "../PropertyDetails";
 import { UserInfo } from "../UserInfo";
 import { Separator } from "@/components/ui/separator";
 import { Description } from "../Description";
+import { Amenities } from "../Amenities";
 
 interface PropertyDetailsPageProps {
   params: {
@@ -22,7 +23,7 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
   if (!property) {
     redirect("/");
   }
-  const { bedrooms, baths, beds, guests, description } = property;
+  const { bedrooms, baths, beds, guests, description, amenities } = property;
   const { firstName, profileImage } = property.profile;
   return (
     <section>
@@ -45,6 +46,7 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
           <UserInfo profile={{ firstName, profileImage }} />
           <Separator className="mt-4" />
           <Description description={description} />
+          <Amenities amenities={amenities} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
           <BookingCalendar />
