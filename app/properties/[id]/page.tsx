@@ -7,6 +7,9 @@ import { ImageContainer } from "../ImageContainer";
 import { CardPropertyRating } from "@/components/card/CardPropertyRating";
 import { BookingCalendar } from "../BookingCalendar";
 import { PropertyDetails } from "../PropertyDetails";
+import { UserInfo } from "../UserInfo";
+import { Separator } from "@/components/ui/separator";
+import { Description } from "../Description";
 
 interface PropertyDetailsPageProps {
   params: {
@@ -19,7 +22,8 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
   if (!property) {
     redirect("/");
   }
-  const {bedrooms, baths, beds, guests} = property;
+  const { bedrooms, baths, beds, guests, description } = property;
+  const { firstName, profileImage } = property.profile;
   return (
     <section>
       <BreadCrumbs name={property.name} />
@@ -37,7 +41,10 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
             <h1 className="text-xl font-bold">{property.name}</h1>
             <CardPropertyRating inPage propertyId={property.id} />
           </div>
-          <PropertyDetails details={{baths, bedrooms, beds, guests}} />
+          <PropertyDetails details={{ baths, bedrooms, beds, guests }} />
+          <UserInfo profile={{ firstName, profileImage }} />
+          <Separator className="mt-4" />
+          <Description description={description} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
           <BookingCalendar />
