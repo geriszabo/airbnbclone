@@ -6,6 +6,7 @@ import { ShareButton } from "../ShareButton";
 import { ImageContainer } from "../ImageContainer";
 import { CardPropertyRating } from "@/components/card/CardPropertyRating";
 import { BookingCalendar } from "../BookingCalendar";
+import { PropertyDetails } from "../PropertyDetails";
 
 interface PropertyDetailsPageProps {
   params: {
@@ -18,7 +19,7 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
   if (!property) {
     redirect("/");
   }
-  const {} = property;
+  const {bedrooms, baths, beds, guests} = property;
   return (
     <section>
       <BreadCrumbs name={property.name} />
@@ -34,8 +35,9 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
         <div className="lg:col-span-8">
           <div className="flex gap-x-4 items-center">
             <h1 className="text-xl font-bold">{property.name}</h1>
-            <CardPropertyRating inPage propertyId={property.id} />{" "}
+            <CardPropertyRating inPage propertyId={property.id} />
           </div>
+          <PropertyDetails details={{baths, bedrooms, beds, guests}} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
           <BookingCalendar />
