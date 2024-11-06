@@ -1,7 +1,8 @@
 import { findCountryByCode } from "@/utils/countries"
+import { Country } from "world-countries"
 
 interface CardCountryFlagAndNameProps {
-  countryCode: string
+  countryCode: Country["cca2"]
 }
 
 
