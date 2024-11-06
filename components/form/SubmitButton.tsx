@@ -48,7 +48,6 @@ export const CardSignInButton = () => {
 
 export const CardSubmitButton = ({isFavorite}: {isFavorite: boolean}) => {
   const {pending} = useFormStatus()
-  console.log({isFavorite})
   function renderIcon() {
     if(!pending) {
       return isFavorite ? <Heart fill="black" /> : <Heart/>

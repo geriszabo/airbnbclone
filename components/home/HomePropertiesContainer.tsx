@@ -1,7 +1,7 @@
 import { fetchProperties } from "@/utils/actions";
 import { PropertyCardProps } from "@/utils/types";
 import { EmptyList } from "./EmptyList";
-import { HomePropertiesList } from "./HomePropertiesList";
+import { PropertiesList } from "./PropertiesList";
 
 interface HomePropertiesContainerProps {
   category?: string;
@@ -25,5 +25,5 @@ export const HomePropertiesContainer = async ({
       />
     );
   }
-  return <HomePropertiesList properties={properties} />
+  return <PropertiesList properties={properties} />
 };

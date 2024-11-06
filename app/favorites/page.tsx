@@ -1,9 +1,16 @@
+import { EmptyList } from "@/components/home/EmptyList"
+import { PropertiesList } from "@/components/home/PropertiesList"
+import { fetchFavorites } from "@/utils/actions"
 
+async function FavoritesPage() {
+  const favorites = await fetchFavorites()
 
-function FavoritesPAge() {
+  if(favorites.length === 0) {
+    return <EmptyList/>
+  }
   return (
-    <div>FavoritesPAge</div>
+    <PropertiesList properties={favorites}/>
   )
 }
 
-export default FavoritesPAge
+export default FavoritesPage
