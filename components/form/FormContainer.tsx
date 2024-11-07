@@ -8,20 +8,29 @@ import { actionFunction } from "@/utils/types";
 interface FormContainerProps {
   action: actionFunction;
   children: ReactNode;
-  title:string
+  title: string;
+  onSuccess?: () => void;
 }
 
 const initialState = {
   message: "",
 };
 
-export const FormContainer = ({ action, children, title }: FormContainerProps) => {
-    const [state, formAction] = useFormState(action, initialState);
-    const { toast } = useToast();
-    useEffect(() => {
-      if (state.message) {
-        toast({ title, description: state.message });
+export const FormContainer = ({
+  action,
+  children,
+  title,
+  onSuccess,
+}: FormContainerProps) => {
+  const [state, formAction] = useFormState(action, initialState);
+  const { toast } = useToast();
+  useEffect(() => {
+    if (state.message) {
+      toast({ title, description: state.message });
+      if (onSuccess) {
+        onSuccess();
       }
-    }, [state, title, toast]);
-    return <form action={formAction}>{children}</form>;
+    }
+  }, [onSuccess, state, title, toast]);
+  return <form action={formAction}>{children}</form>;
 };
