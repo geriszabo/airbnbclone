@@ -1,36 +1,49 @@
-
-"use client"
-
-import { useState } from "react";
 import { Button } from "../ui/button";
-import { Card } from "../ui/card";
 import { FormContainer } from "../form/FormContainer";
 import { createReviewAction } from "@/utils/actions";
 import { TextAreaInput } from "../form/TextAreaInput";
 import { SubmitButton } from "../form/SubmitButton";
 import { RatingInput } from "./RatingInput";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+} from "../ui/dialog";
+import { DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
 
 interface SubmitReviewProps {
-    propertyId: string
+  propertyId: string;
 }
 
-export const SubmitReview = ({propertyId}: SubmitReviewProps) => {
-    const [isReviewFormVisible, setIsReviewFormVisible] = useState(false)
+export const SubmitReview = ({ propertyId }: SubmitReviewProps) => {
 
+  return (
+    <div className="mt-8">
+      <Dialog>
+        <DialogTrigger asChild>
+            <Button >Leave a review</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>How did you like it here? </DialogTitle>
+            <DialogDescription>
+              Rate this property on a scale of 5, write an honest feedback.
+            </DialogDescription>
+            <FormContainer title="" action={createReviewAction}>
+            <input type="hidden" name="propertyId" value={propertyId} />
+            <RatingInput name="rating" />
+            <TextAreaInput
+              name="comment"
+              labelText="your thoughts on this property"
+              defaultValue="Amazing place"
+            />
+            <SubmitButton text="Submit" className="mt-4" />
+          </FormContainer>
+          </DialogHeader>
 
-  return <div className="mt-8">
-    <Button onClick={() => setIsReviewFormVisible(prev => !prev)}>
-        Leave a Review
-    </Button>
-    {
-        isReviewFormVisible && <Card className="p-8 mt-8">
-            <FormContainer title="" action={createReviewAction}  >
-                <input type="hidden" name="propertyId" value={propertyId} />
-                <RatingInput  name="rating" />
-                <TextAreaInput name="comment" labelText="your thoughts on this property" defaultValue="Amazing place" />
-                <SubmitButton text="Submit" className="mt-4" />
-            </FormContainer>
-        </Card>
-    }
-  </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 };
