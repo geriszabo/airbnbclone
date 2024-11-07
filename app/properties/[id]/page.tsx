@@ -13,6 +13,7 @@ import { Description } from "../../../components/properties/Description";
 import { Amenities } from "../../../components/properties/Amenities";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SubmitReview } from "@/components/reviews/SubmitReview";
 
 interface PropertyDetailsPageProps {
   params: {
@@ -65,6 +66,7 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
           <BookingCalendar />
         </div>
       </section>
+      <SubmitReview propertyId={property.id}/>
     </section>
   );
 }
