@@ -5,7 +5,7 @@ interface CardPropertyRatingProps {
   inPage: boolean
 }
 
-export const CardPropertyRating = ({inPage, propertyId}: CardPropertyRatingProps) => {
+export const CardPropertyRating = ({inPage}: CardPropertyRatingProps) => {
   const rating = 1.1
   const count = 100
 
