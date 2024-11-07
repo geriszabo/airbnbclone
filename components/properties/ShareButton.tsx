@@ -29,7 +29,7 @@ export const ShareButton = ({ name, propertyId }: ShareButtonProps) => {
         side="bottom"
         align="center"
         sideOffset={10}
-        className="flex items-center gap-x-2 justify-center w-full p-2 rounded-sm shadow-md"
+        className="flex items-center gap-x-2 justify-center w-full p-2 rounded-sm shadow-md z-10 bg-white"
       >
         <TwitterShareButton url={shareLink} title={name}>
           <Twitter strokeWidth={1} />
