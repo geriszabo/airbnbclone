@@ -6,9 +6,9 @@ import {
 } from "@/utils/actions";
 import { FormInput } from "@/components/form/FormInput";
 import { SubmitButton } from "@/components/form/SubmitButton";
-import { createProfileInputFields } from "./create/page";
 import { Profile } from "@prisma/client";
 import { ImageInputContainer } from "@/components/form/ImageInputContainer";
+import { createProfileInputFields } from "@/utils/inputfields";
 
 type ProfileWithoutDates = Omit<Profile, "createdAt" | "updatedAt">;
 
@@ -16,7 +16,7 @@ async function ProfilePage() {
   const profile = (await fetchProfile()) as Profile;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { createdAt, updatedAt, ...restProfile } =
-    profile as ProfileWithoutDates;
+    profile as Profile;
 
   return (
     <section>

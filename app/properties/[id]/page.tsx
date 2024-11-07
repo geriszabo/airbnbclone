@@ -13,7 +13,6 @@ import { Description } from "../../../components/properties/Description";
 import { Amenities } from "../../../components/properties/Amenities";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PropertyMapProps } from "@/components/properties/PropertyMap";
 
 interface PropertyDetailsPageProps {
   params: {
