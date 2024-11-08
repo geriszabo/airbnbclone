@@ -1,4 +1,4 @@
-import { fetchPropertyDetails } from "@/utils/actions";
+import { fetchPropertyDetails, findExistingReview } from "@/utils/actions";
 import { redirect } from "next/navigation";
 import { BreadCrumbs } from "../../../components/properties/BreadCrumbs";
 import { CardFavoriteToggleButton } from "@/components/card/CardFavoriteToggleButton";
@@ -15,13 +15,13 @@ import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SubmitReview } from "@/components/reviews/SubmitReview";
 import { PropertyReviews } from "@/components/reviews/PropertyReviews";
+import { auth } from "@clerk/nextjs/server";
 
 interface PropertyDetailsPageProps {
   params: {
     id: string;
   };
 }
-
 
 const DynamicMap = dynamic(
   () => import("@/components/properties/PropertyMap"),
@@ -31,7 +31,6 @@ const DynamicMap = dynamic(
   }
 );
 
-
 async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
   const property = await fetchPropertyDetails(params.id);
   if (!property) {
@@ -39,6 +38,14 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
   }
   const { bedrooms, baths, beds, guests, description, amenities } = property;
   const { firstName, profileImage } = property.profile;
+
+  const { userId } = await auth();
+  const isOwnerOfProperty = property.profile.clerkId === userId;
+  //Disable review for user if user is owner or already made review
+  const canSubmitReview =
+    userId &&
+    !isOwnerOfProperty &&
+    !(await findExistingReview(userId, property.id));
   return (
     <section>
       <BreadCrumbs name={property.name} />
@@ -61,13 +68,13 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
           <Separator className="mt-4" />
           <Description description={description} />
           <Amenities amenities={amenities} />
-          <DynamicMap countryCode={property.country}/>
+          <DynamicMap countryCode={property.country} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
           <BookingCalendar />
         </div>
       </section>
-      <SubmitReview propertyId={property.id}/>
+      {canSubmitReview && <SubmitReview propertyId={property.id} />}
       <PropertyReviews propertyId={property.id} />
     </section>
   );

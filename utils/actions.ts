@@ -378,3 +378,12 @@ export const fetchPropertyRating = async(propertyId: string) => {
   })
   return {rating: result[0]?._avg.rating?.toFixed() ?? 0, count: result[0]?._count.rating ?? 0}
 }
+
+export const findExistingReview = async(userId: string, propertyId: string) => {
+return db.review.findFirst({
+  where: {
+    profileId: userId,
+    propertyId
+  }
+})
+}
