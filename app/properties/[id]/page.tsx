@@ -5,7 +5,6 @@ import { CardFavoriteToggleButton } from "@/components/card/CardFavoriteToggleBu
 import { ShareButton } from "../../../components/properties/ShareButton";
 import { ImageContainer } from "../../../components/properties/ImageContainer";
 import { CardPropertyRating } from "@/components/card/CardPropertyRating";
-import { BookingCalendar } from "../../../components/properties/BookingCalendar";
 import { PropertyDetails } from "../../../components/properties/PropertyDetails";
 import { UserInfo } from "../../../components/properties/UserInfo";
 import { Separator } from "@/components/ui/separator";
@@ -71,7 +70,6 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
           <DynamicMap countryCode={property.country} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
-          <BookingCalendar />
         </div>
       </section>
       {canSubmitReview && <SubmitReview propertyId={property.id} />}

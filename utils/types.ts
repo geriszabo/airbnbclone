@@ -11,3 +11,14 @@ export type PropertyCardProps = {
   country: string;
   price: number;
 };
+
+export interface DateRangeSelect {
+  startDate: Date;
+  endDate: Date;
+  key: string;
+}
+
+export interface Booking {
+  checkIn: Date;
+  checkOut: Date;
+}
