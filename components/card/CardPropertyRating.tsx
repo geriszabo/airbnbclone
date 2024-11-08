@@ -1,3 +1,4 @@
+import { fetchPropertyRating } from "@/utils/actions"
 import { Star } from "lucide-react"
 
 interface CardPropertyRatingProps {
@@ -5,10 +6,11 @@ interface CardPropertyRatingProps {
   inPage: boolean
 }
 
-export const CardPropertyRating = ({inPage}: CardPropertyRatingProps) => {
-  const rating = 1.1
-  const count = 100
-
+export const CardPropertyRating = async ({inPage, propertyId}: CardPropertyRatingProps) => {
+const {rating, count} = await fetchPropertyRating(propertyId)
+if(count === 0) {
+  return null
+}
   const className = `flex gap-1 items-center ${inPage ? "text-md": "text-xs"}`
   const countText = count > 1 ? "reviews" : "review"
   const countValue = `(${count}) ${inPage ? countText : ""}`
