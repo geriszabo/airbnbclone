@@ -14,6 +14,7 @@ import { Amenities } from "../../../components/properties/Amenities";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SubmitReview } from "@/components/reviews/SubmitReview";
+import { PropertyReviews } from "@/components/reviews/PropertyReviews";
 
 interface PropertyDetailsPageProps {
   params: {
@@ -67,6 +68,7 @@ async function PropertyDetailsPage({ params }: PropertyDetailsPageProps) {
         </div>
       </section>
       <SubmitReview propertyId={property.id}/>
+      <PropertyReviews propertyId={property.id} />
     </section>
   );
 }

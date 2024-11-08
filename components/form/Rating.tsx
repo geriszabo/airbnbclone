@@ -1,7 +1,17 @@
-import React from 'react'
+import { Star } from "lucide-react"
 
-export const Rating = () => {
+
+interface RatingProps {
+  rating: number
+}
+export const Rating = ({rating}: RatingProps) => {
+  const stars = Array.from({length: 5}, (_, index)=> index +1 <= rating)
   return (
-    <div>Rating</div>
+   <div className="flex items-center gap-x-1" >
+    {stars.map((isStar, index) => {
+      const className = `w-3 h-3`
+      return isStar ? <Star className={className} key={index} fill="gold" strokeWidth={1} />  : <Star className={className} key={index} strokeWidth={1} />
+    })}
+   </div>
   )
 }
