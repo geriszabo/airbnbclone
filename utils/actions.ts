@@ -280,9 +280,9 @@ export const fetchPropertyDetails = (id: string) => {
       bookings: {
         select: {
           checkIn: true,
-          checkOut: true
-        }
-      }
+          checkOut: true,
+        },
+      },
     },
   });
 };
@@ -351,78 +351,133 @@ export const fetchPropertyReviewsByUser = async () => {
   return reviews;
 };
 
-export const deleteReviewAction = async (prevState: {reviewId: string}) => {
-  const {reviewId} = prevState
-  const user = await getAuthUser()
+export const deleteReviewAction = async (prevState: { reviewId: string }) => {
+  const { reviewId } = prevState;
+  const user = await getAuthUser();
 
   try {
     await db.review.delete({
       where: {
         id: reviewId,
-        profileId: user.id
-      }
-    })
-    revalidatePath("/reviews")
-    return {message: "Review deleted successfully"}
+        profileId: user.id,
+      },
+    });
+    revalidatePath("/reviews");
+    return { message: "Review deleted successfully" };
   } catch (error) {
-    return renderError(error)
+    return renderError(error);
   }
 };
 
-export const fetchPropertyRating = async(propertyId: string) => {
+export const fetchPropertyRating = async (propertyId: string) => {
   const result = await db.review.groupBy({
-  by: ["propertyId",
-  ],
-  _avg: {
-    rating: true
-  }, 
-  _count: {
-    rating: true
-  },
-  where: {
-    propertyId
-  }
-  })
-  return {rating: result[0]?._avg.rating?.toFixed() ?? 0, count: result[0]?._count.rating ?? 0}
-}
+    by: ["propertyId"],
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      rating: true,
+    },
+    where: {
+      propertyId,
+    },
+  });
+  return {
+    rating: result[0]?._avg.rating?.toFixed() ?? 0,
+    count: result[0]?._count.rating ?? 0,
+  };
+};
 
-export const findExistingReview = async(userId: string, propertyId: string) => {
-return db.review.findFirst({
-  where: {
-    profileId: userId,
-    propertyId
-  }
-})
-}
+export const findExistingReview = async (
+  userId: string,
+  propertyId: string
+) => {
+  return db.review.findFirst({
+    where: {
+      profileId: userId,
+      propertyId,
+    },
+  });
+};
 
-export const createBookingAction = async(prevState:  {propertyId: string, checkIn: Date, checkOut: Date}) => {
-  const user = await getAuthUser()
-  const {propertyId, checkIn, checkOut} = prevState
+export const createBookingAction = async (prevState: {
+  propertyId: string;
+  checkIn: Date;
+  checkOut: Date;
+}) => {
+  const user = await getAuthUser();
+  const { propertyId, checkIn, checkOut } = prevState;
   const property = await db.property.findUnique({
     where: {
-      id: propertyId
+      id: propertyId,
     },
     select: {
-      price: true
-    }
-  })
+      price: true,
+    },
+  });
 
-  if(!property) {
-    return {message: "Property not found"}
+  if (!property) {
+    return { message: "Property not found" };
   }
 
-  const {orderTotal, totalNights} = calculateTotals({
-    checkIn, checkOut, price: property.price
-  })
+  const { orderTotal, totalNights } = calculateTotals({
+    checkIn,
+    checkOut,
+    price: property.price,
+  });
 
   try {
-   await db.booking.create({
+    await db.booking.create({
       data: {
-        checkIn, checkOut, orderTotal, totalNights, profileId: user.id, propertyId
-      }
-    })
+        checkIn,
+        checkOut,
+        orderTotal,
+        totalNights,
+        profileId: user.id,
+        propertyId,
+      },
+    });
   } catch (error) {
-    return renderError(error)
+    return renderError(error);
   }
-  redirect("/bookings")
-}
+  redirect("/bookings");
+};
+
+export const fetchBookings = async () => {
+  const user = await getAuthUser();
+  const bookings = await db.booking.findMany({
+    where: {
+      profileId: user.id,
+    },
+    include: {
+      property: {
+        select: {
+          id: true,
+          name: true,
+          country: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return bookings;
+};
+
+export const deleteBookingAction = async (prevState: { bookingId: string }) => {
+  const { bookingId } = prevState;
+  const user = await getAuthUser();
+  try {
+    await db.booking.delete({
+      where: {
+        id: bookingId,
+        profileId: user.id,
+      },
+    });
+    revalidatePath("/bookings");
+    return { message: "Booking deleted successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
