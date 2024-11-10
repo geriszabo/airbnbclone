@@ -13,6 +13,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   deleteCurrentProfileImageFromCloudinary,
+  deletePropertyImageFromCloudinary,
   getImageUrl,
 } from "./cloudinary";
 import { calculateTotals } from "./calculateTotal";
@@ -477,6 +478,65 @@ export const deleteBookingAction = async (prevState: { bookingId: string }) => {
     });
     revalidatePath("/bookings");
     return { message: "Booking deleted successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const fetchRentals = async () => {
+  const user = await getAuthUser();
+  const rentals = await db.property.findMany({
+    where: {
+      profileId: user.id,
+    },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+    },
+  });
+
+  const rentalsWithBookings = await Promise.all(
+    rentals.map(async (rental) => {
+      const totalNightsSum = await db.booking.aggregate({
+        where: {
+          propertyId: rental.id,
+        },
+        _sum: {
+          totalNights: true,
+        },
+      });
+      const orderTotal = await db.booking.aggregate({
+        where: {
+          propertyId: rental.id,
+        },
+        _sum: {
+          orderTotal: true,
+        },
+      });
+      return {
+        ...rental,
+        totalNightsSum: totalNightsSum._sum.totalNights,
+        orderTotalSum: orderTotal._sum.orderTotal,
+      };
+    })
+  );
+  return rentalsWithBookings
+};
+
+export const deleteRentalAction = async (prevState: { propertyId: string }) => {
+  const { propertyId } = prevState;
+  const user = await getAuthUser();
+  try {
+    await deletePropertyImageFromCloudinary(propertyId)
+    await db.property.delete({
+      where: {
+        id: propertyId,
+        profileId: user.id,
+      },
+    });
+    revalidatePath("/rentals");
+    return { message: "Rental deleted successfully" };
   } catch (error) {
     return renderError(error);
   }
