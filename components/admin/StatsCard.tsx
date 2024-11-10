@@ -3,7 +3,7 @@ import { Card, CardHeader } from "../ui/card"
 
 interface StatsCardProps {
   title: string,
-  value: number
+  value: number | string
 }
 
 export const StatsCard = ({title, value}: StatsCardProps) => {

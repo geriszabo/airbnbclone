@@ -7,12 +7,15 @@ import { formatCurrency, formatDate } from '@/utils/format'
 import Link from 'next/link'
 import { CardCountryFlagAndName } from '@/components/card/CardCountryFlagAndName'
 import { count } from 'console'
+import { Stats } from '@/components/reservations/Stats'
 async function ReservationsPage  () {
 const reservations = await fetchReservations()
 if(reservations.length === 0) {
   <EmptyList/>
 }
   return (
+    <>
+    <Stats/>
     <div className="mt-16">
       <h4 className="mb-4 capitalize">
         total reservations: {reservations.length}
@@ -49,6 +52,7 @@ if(reservations.length === 0) {
         </TableBody>
       </Table>
     </div>
+    </>
   )
 }
 

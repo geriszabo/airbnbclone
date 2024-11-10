@@ -24,10 +24,7 @@ const getAuthUser = async () => {
   if (!user) {
     throw new Error("You must be logged in to access this route");
   }
-
-  if (!user.privateMetadata.hasProfile) {
-    redirect("/profile/create");
-  }
+  if (!user.privateMetadata.hasProfile) redirect("/profile/create");
   return user;
 };
 
@@ -652,32 +649,58 @@ export const fetchStats = async () => {
   };
 };
 
-export const fetchChartsData = async() =>{
-  await getAdminUser()
-  const date = new Date()
-  date.setMonth(date.getMonth() - 6)
-  const sixMonthsAgo = date
+export const fetchChartsData = async () => {
+  await getAdminUser();
+  const date = new Date();
+  date.setMonth(date.getMonth() - 6);
+  const sixMonthsAgo = date;
 
   const bookings = await db.booking.findMany({
     where: {
       createdAt: {
-        gte: sixMonthsAgo
-      }
+        gte: sixMonthsAgo,
+      },
     },
     orderBy: {
-      createdAt: "asc"
-    }
-  })
+      createdAt: "asc",
+    },
+  });
   const bookingsPerMonth = bookings.reduce((total, current) => {
-    const date = formatDate(current.createdAt, true)
-    const existingEntry = total.find(entry => entry.date === date)
-    if(existingEntry) {
-      existingEntry.count += 1
+    const date = formatDate(current.createdAt, true);
+    const existingEntry = total.find((entry) => entry.date === date);
+    if (existingEntry) {
+      existingEntry.count += 1;
     } else {
-      total.push({date, count: 1})
+      total.push({ date, count: 1 });
     }
-    return total
-  }, [] as Array<{date: string, count: number}>)
+    return total;
+  }, [] as Array<{ date: string; count: number }>);
 
-  return bookingsPerMonth
-}
+  return bookingsPerMonth;
+};
+
+export const fetchReservationsStats = async () => {
+  const user = await getAuthUser();
+  const properties = await db.property.count({
+    where: {
+      profileId: user.id,
+    },
+  });
+  const totals = await db.booking.aggregate({
+    _sum: {
+      orderTotal: true,
+      totalNights: true,
+    },
+    where: {
+      property: {
+        profileId: user.id,
+      },
+    },
+  });
+
+  return {
+    properties,
+    nights: totals._sum.totalNights || 0,
+    amount: totals._sum.orderTotal || 0,
+  };
+};
