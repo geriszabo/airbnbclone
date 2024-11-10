@@ -521,14 +521,14 @@ export const fetchRentals = async () => {
       };
     })
   );
-  return rentalsWithBookings
+  return rentalsWithBookings;
 };
 
 export const deleteRentalAction = async (prevState: { propertyId: string }) => {
   const { propertyId } = prevState;
   const user = await getAuthUser();
   try {
-    await deletePropertyImageFromCloudinary(propertyId)
+    await deletePropertyImageFromCloudinary(propertyId);
     await db.property.delete({
       where: {
         id: propertyId,
@@ -542,20 +542,62 @@ export const deleteRentalAction = async (prevState: { propertyId: string }) => {
   }
 };
 
-export const fetchRentalDetails = async(propertyId: string) => {
-  const user = await getAuthUser()
+export const fetchRentalDetails = async (propertyId: string) => {
+  const user = await getAuthUser();
   return await db.property.findUnique({
     where: {
       id: propertyId,
-      profileId: user.id
-    }
-  })
-} 
+      profileId: user.id,
+    },
+  });
+};
 
-export const updatePropertyAction = async () => {
-  return {message: "update property action"}
-}
+export const updatePropertyAction = async (
+  prevState: unknown,
+  formData: FormData
+): Promise<{ message: string }> => {
+  const user = await getAuthUser();
+  const propertyId = formData.get("id") as string;
 
-export const updatePropertyImageAction = async () => {
-  return {message: "update propety image action"}
-}
+  try {
+    const rawData = Object.fromEntries(formData);
+    const validatedFields = validateWithZodSchema(propertySchema, rawData);
+    await db.property.update({
+      where: {
+        id: propertyId,
+        profileId: user.id,
+      },
+      data: {
+        ...validatedFields,
+      },
+    });
+    revalidatePath(`/rentals/${propertyId}/edit`);
+    return { message: "Property updated successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const updatePropertyImageAction = async (prevState: unknown, formData:FormData): Promise<{message: string}> => {
+  const user = await getAuthUser()
+  const propertyId = formData.get("id") as string
+  try {
+    await deletePropertyImageFromCloudinary(propertyId)
+    const image = formData.get("image")
+    const validatedFile = validateWithZodSchema(imageSchema, { image });
+    const fullPath = await getImageUrl(validatedFile.image, "property-image");
+    await db.property.update({
+      where: {
+        id: propertyId,
+        profileId: user.id
+      },
+      data: {
+        image: fullPath.url
+      }
+    })
+    revalidatePath(`/rentals/${propertyId}/edit`);
+    return { message: "Property image updated successfully" };
+  } catch (error) {
+    return renderError(error)
+  }
+};

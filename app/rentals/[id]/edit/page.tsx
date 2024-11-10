@@ -12,6 +12,7 @@ import {
   fetchPropertyDetails,
   updateProfileImageAction,
   updatePropertyAction,
+  updatePropertyImageAction,
 } from "@/utils/actions";
 import { Amenity } from "@/utils/amenities";
 import { Profile, Property } from "@prisma/client";
@@ -28,7 +29,7 @@ async function EditRentalPage({ params }: EditRentalPageProps) {
   if (!property) {
     redirect("/");
   }
-  const defaultAmenities: Amenity[] = JSON.parse(property.amenities)
+  const defaultAmenities: Amenity[] = JSON.parse(property.amenities);
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-8 capitalize">Edit Property</h1>
@@ -36,7 +37,7 @@ async function EditRentalPage({ params }: EditRentalPageProps) {
         <ImageInputContainer
           name={property.name}
           text="Update Image"
-          action={updateProfileImageAction}
+          action={updatePropertyImageAction}
           image={property.image}
         >
           <input type="hiden" name="id" value={property.id} />
@@ -53,12 +54,6 @@ async function EditRentalPage({ params }: EditRentalPageProps) {
             <FormInput
               name="tagline"
               type="text"
-              label="Name (20 limit)"
-              defaultValue={property.name}
-            />
-            <FormInput
-              name="name"
-              type="text"
               label="Tagline (30 limit)"
               defaultValue={property.tagline}
             />
@@ -68,8 +63,8 @@ async function EditRentalPage({ params }: EditRentalPageProps) {
           </div>
           <TextAreaInput
             name="description"
+            labelText="Description (10 - 100 Words)"
             defaultValue={property.description}
-            labelText="Description (10 - 100 words)"
           />
           <h3 className="text-lg mt-8 mb-4 font-medium">
             Accomodation Details
@@ -82,10 +77,10 @@ async function EditRentalPage({ params }: EditRentalPageProps) {
             />
           ))}
 
-          <h3 className="text-lg mt-10 mb-6 font-medium" >Amenities</h3>
-          <FormAmenitiesInput defaultValue={defaultAmenities}/>
+          <h3 className="text-lg mt-10 mb-6 font-medium">Amenities</h3>
+          <FormAmenitiesInput defaultValue={defaultAmenities} />
 
-          <SubmitButton text="edit property" className="mt-12"/>
+          <SubmitButton text="edit property" className="mt-12" />
         </FormContainer>
       </div>
     </section>

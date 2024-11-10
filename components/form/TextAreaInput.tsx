@@ -24,7 +24,6 @@ export const TextAreaInput = ({
         rows={5}
         required
         className="leading-loose resize-none"
-        
       />
     </div>
   );
