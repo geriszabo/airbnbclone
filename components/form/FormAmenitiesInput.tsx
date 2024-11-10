@@ -1,3 +1,5 @@
+"use client"
+
 import { amenities, Amenity } from "@/utils/amenities";
 import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
@@ -10,8 +12,11 @@ interface FormAmenitiesInputProps {
 export const FormAmenitiesInput = ({
   defaultValue,
 }: FormAmenitiesInputProps) => {
+  const amenitiesWithIcons = defaultValue?.map(({name, selected}) => {
+    return {name, selected, icon: amenities.find(amenity => amenity.name === name)!.icon}
+  })
   const [selectedAmenities, setSelectedAmenities] = useState<Amenity[]>(
-    defaultValue || amenities
+    amenitiesWithIcons || amenities
   );
 
   function handleChange(amenity: Amenity) {
