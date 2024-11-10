@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { deleteBookingAction, fetchBookings } from "@/utils/actions";
+import { tableRows } from "@/utils/categories";
 import { formatCurrency, formatDate } from "@/utils/format";
 import Link from "next/link";
 
@@ -86,13 +87,3 @@ function DeleteBooking({ bookingId }: DeleteBookingProps) {
     </FormContainer>
   );
 }
-
-export const tableRows = [
-  "Property Name",
-  "Country",
-  "Nights",
-  "Total",
-  "Check In",
-  "Check Out",
-  "Actions",
-];

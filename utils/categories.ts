@@ -72,3 +72,14 @@ export const categories: Category[] = [
     icon: Tent,
   },
 ];
+
+
+export const tableRows = [
+  "Property Name",
+  "Country",
+  "Nights",
+  "Total",
+  "Check In",
+  "Check Out",
+  "Actions",
+];

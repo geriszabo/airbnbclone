@@ -2,11 +2,11 @@ import { EmptyList } from '@/components/home/EmptyList'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { fetchReservations } from '@/utils/actions'
 
-import { tableRows } from '../bookings/page'
 import { formatCurrency, formatDate } from '@/utils/format'
 import Link from 'next/link'
 import { CardCountryFlagAndName } from '@/components/card/CardCountryFlagAndName'
 import { Stats } from '@/components/reservations/Stats'
+import { tableRows } from '@/utils/categories'
 async function ReservationsPage  () {
 const reservations = await fetchReservations()
 if(reservations.length === 0) {
