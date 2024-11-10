@@ -87,7 +87,7 @@ function DeleteBooking({ bookingId }: DeleteBookingProps) {
   );
 }
 
-const tableRows = [
+export const tableRows = [
   "Property Name",
   "Country",
   "Nights",
