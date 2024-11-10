@@ -1,7 +1,7 @@
 import { EmptyList } from '@/components/home/EmptyList'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { fetchReservations } from '@/utils/actions'
-import React from 'react'
+
 import { tableRows } from '../bookings/page'
 import { formatCurrency, formatDate } from '@/utils/format'
 import Link from 'next/link'
