@@ -10,7 +10,10 @@ cloudinary.config({
 
 export default cloudinary;
 
-export const getImageUrl = async (image: File, usecase: "profile-image" | "property-image") => {
+export const getImageUrl = async (
+  image: File,
+  usecase: "profile-image" | "property-image"
+) => {
   const imageBuffer = await image.arrayBuffer();
   const imageArray = Array.from(new Uint8Array(imageBuffer));
   const imageData = Buffer.from(imageArray);
@@ -22,7 +25,10 @@ export const getImageUrl = async (image: File, usecase: "profile-image" | "prope
   try {
     const result = await cloudinary.uploader.upload(
       `data:image/png;base64,${imageBase64}`,
-      { folder: usecase === "profile-image" ? "home-away" : "home-away-properties" }
+      {
+        folder:
+          usecase === "profile-image" ? "home-away" : "home-away-properties",
+      }
     );
     return result;
   } catch (error) {
@@ -31,16 +37,27 @@ export const getImageUrl = async (image: File, usecase: "profile-image" | "prope
   }
 };
 
-const deleteCurrentImageFromCloudinary = async (profile: Profile) => {
+const extractCloudinaryId = (
+  url: string | undefined,
+  folder: string
+): string | undefined => {
+  const match = url?.match(new RegExp(`${folder}/[^.]*`));
+  return match ? match[0] : undefined;
+};
+
+const deleteImageFromCloudinary = async (imageUrl: string, folder: string) => {
+  const imageId = extractCloudinaryId(imageUrl, folder);
+  if (!imageId) {
+    throw new Error("Error while extracting image id");
+  }
   try {
-    const currentProfileImage = profile.profileImage.match(/home-away\/[^.]*/);
-    const currentProfileImageId = currentProfileImage
-      ? currentProfileImage[0]
-      : undefined;
-    if (!currentProfileImageId) return;
-    await cloudinary.uploader.destroy(currentProfileImageId);
-  } catch {
-    throw new Error("Error while deleting image");
+    cloudinary.uploader.destroy(imageId);
+  } catch (error) {
+    throw new Error(
+      `Error deleting image from Cloudinary: ${
+        error instanceof Error ? error.message : "file deletion error"
+      }`
+    );
   }
 };
 
@@ -52,8 +69,21 @@ export const deleteCurrentProfileImageFromCloudinary = async (
       clerkId: userId,
     },
   });
-  if(!user) {
-    throw new Error("Deleting profile image: This user does not exist")
+  if (!user || !user.profileImage) {
+    throw new Error("Deleting profile image: This user does not exist or has no profile picture");
   }
-  await deleteCurrentImageFromCloudinary(user);
+  await deleteImageFromCloudinary(user.profileImage, "home-away")
+};
+
+export const deletePropertyImageFromCloudinary = async (propertyId: string) => {
+    const property = await db.property.findUnique({
+      where: {
+        id: propertyId,
+      },
+    });
+  if(!property || !property.image) {
+    throw new Error("Deleting property image: This property does not exist or has no image");
+
+  }
+  await deleteImageFromCloudinary(property.image, "home-away-properties")
 };
