@@ -6,7 +6,6 @@ import { tableRows } from '../bookings/page'
 import { formatCurrency, formatDate } from '@/utils/format'
 import Link from 'next/link'
 import { CardCountryFlagAndName } from '@/components/card/CardCountryFlagAndName'
-import { count } from 'console'
 import { Stats } from '@/components/reservations/Stats'
 async function ReservationsPage  () {
 const reservations = await fetchReservations()
@@ -24,7 +23,7 @@ if(reservations.length === 0) {
         <TableCaption>A list of your reservations</TableCaption>
         <TableHeader>
           <TableRow>
-            {tableRows.map(tableRow => tableRow !== "Actions" && <TableHead>{tableRow}</TableHead>)}
+            {tableRows.map(tableRow => tableRow !== "Actions" && <TableHead key={tableRow}>{tableRow}</TableHead>)}
           </TableRow>
         </TableHeader>
         <TableBody>

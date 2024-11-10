@@ -10,12 +10,10 @@ import { SubmitButton } from "@/components/form/SubmitButton";
 import { TextAreaInput } from "@/components/form/TextAreaInput";
 import {
   fetchPropertyDetails,
-  updateProfileImageAction,
   updatePropertyAction,
   updatePropertyImageAction,
 } from "@/utils/actions";
 import { Amenity } from "@/utils/amenities";
-import { Profile, Property } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface EditRentalPageProps {

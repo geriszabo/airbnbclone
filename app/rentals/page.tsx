@@ -31,7 +31,7 @@ async function RentalsPage() {
         <TableHeader>
           <TableRow>
             {rentalTableHeads.map((tableHead) => (
-              <TableHead>{tableHead}</TableHead>
+              <TableHead key={tableHead} >{tableHead}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
