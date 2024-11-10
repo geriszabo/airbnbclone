@@ -126,7 +126,9 @@ export const updateProfileImageAction = async (
     const image = formData.get("image") as File;
     const validatedFields = validateWithZodSchema(imageSchema, { image });
     const fullPath = await getImageUrl(validatedFields.image, "profile-image");
-    await deleteCurrentProfileImageFromCloudinary(user.id);
+    if (!user.imageUrl.includes("https://img.clerk.com")) {
+      await deleteCurrentProfileImageFromCloudinary(user.id);
+    }
     await db.profile.update({
       where: {
         clerkId: user.id,
@@ -578,38 +580,41 @@ export const updatePropertyAction = async (
   }
 };
 
-export const updatePropertyImageAction = async (prevState: unknown, formData:FormData): Promise<{message: string}> => {
-  const user = await getAuthUser()
-  const propertyId = formData.get("id") as string
+export const updatePropertyImageAction = async (
+  prevState: unknown,
+  formData: FormData
+): Promise<{ message: string }> => {
+  const user = await getAuthUser();
+  const propertyId = formData.get("id") as string;
   try {
-    await deletePropertyImageFromCloudinary(propertyId)
-    const image = formData.get("image")
+    await deletePropertyImageFromCloudinary(propertyId);
+    const image = formData.get("image");
     const validatedFile = validateWithZodSchema(imageSchema, { image });
     const fullPath = await getImageUrl(validatedFile.image, "property-image");
     await db.property.update({
       where: {
         id: propertyId,
-        profileId: user.id
+        profileId: user.id,
       },
       data: {
-        image: fullPath.url
-      }
-    })
+        image: fullPath.url,
+      },
+    });
     revalidatePath(`/rentals/${propertyId}/edit`);
     return { message: "Property image updated successfully" };
   } catch (error) {
-    return renderError(error)
+    return renderError(error);
   }
 };
 
-export const fetchReservations  = async () => {
-  const user = await getAuthUser()
+export const fetchReservations = async () => {
+  const user = await getAuthUser();
   const reservations = await db.booking.findMany({
     where: {
-      profileId: user.id
+      profileId: user.id,
     },
     orderBy: {
-      createdAt: "desc"
+      createdAt: "desc",
     },
     include: {
       property: {
@@ -617,11 +622,10 @@ export const fetchReservations  = async () => {
           id: true,
           name: true,
           price: true,
-          country: true
-        }
-      } 
-
-    }
-  })
-  return reservations
-}
+          country: true,
+        },
+      },
+    },
+  });
+  return reservations;
+};
