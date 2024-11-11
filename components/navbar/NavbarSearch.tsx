@@ -1,11 +1,15 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "../ui/input";
+import { Input, InputProps } from "../ui/input";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-export const NavbarSearch = () => {
+interface NavbarSearchProps {
+  className?: InputProps["className"]
+}
+
+export const NavbarSearch = ({className}: NavbarSearchProps) => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
@@ -33,7 +37,7 @@ export const NavbarSearch = () => {
     <Input
       type="text"
       placeholder="find a property..."
-      className="max-w-xs dark:bg-mted"
+      className={className ?? ""}
       value={search}
       onChange={(e) => (
         setSearch(e.target.value), handleSearch(e.target.value)

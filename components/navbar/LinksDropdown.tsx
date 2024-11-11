@@ -12,17 +12,19 @@ import { UserIcon } from "./UserIcon";
 import { links } from "@/utils/links";
 import { SignOutLink } from "./SignOutLink";
 import { SignedOut, SignedIn, SignUpButton, SignInButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
 
-export const LinksDropdown = async () => {
-  const { userId } = await auth();
-  const isAdminUser = userId === process.env.ADMIN_USER_ID;
+interface LinksDropdownPrps {
+  profileImage: string | null | undefined
+  isAdminUser: boolean
+}
+
+export const LinksDropdown = ({isAdminUser, profileImage}: LinksDropdownPrps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="flex gap-4 max-w-[100px]">
           <AlignLeft className="w-6 h-6" />
-          <UserIcon />
+          <UserIcon profileImage={profileImage} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-52" align="start" sideOffset={10}>
