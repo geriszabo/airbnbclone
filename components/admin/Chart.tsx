@@ -24,7 +24,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export const Chart = ({ data }: ChartProps) => {
-  console.log(data);
   return (
     <section className="mt-24">
       <h1 className="text-4xl font-semibold text-center">Monthly Bookings</h1>

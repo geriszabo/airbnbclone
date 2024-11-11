@@ -11,7 +11,6 @@ export const useIsMobile = () => {
     handleResize();
 
     window.addEventListener('resize', handleResize);
-    console.log("resized")
     return () => {
       window.removeEventListener('resize', handleResize);
     };

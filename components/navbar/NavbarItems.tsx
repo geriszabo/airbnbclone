@@ -16,7 +16,6 @@ export const NavbarItems = ({
   profileImage,
 }: NavbarItemsProps) => {
   const isMobile = useIsMobile();
-  console.log(isMobile);
   return (
     <>
       {isMobile ? (
