@@ -21,7 +21,7 @@ function CheckoutPage() {
       bookingId,
     });
     return response.data.clientSecret;
-  }, []);
+  }, [bookingId]);
 
   const options = { fetchClientSecret };
 

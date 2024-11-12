@@ -23,7 +23,7 @@ const BookingWrapper = ({
       price,
       bookings,
     });
-  }, []);
+  }, [bookings, price, propertyId]);
 
   return (
     <>
